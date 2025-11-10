@@ -39,4 +39,4 @@ jobs:
           # This token is provided by GitHub Actions automatically
           github_token: ${{ secrets.GITHUB_TOKEN }}
           # The folder the action should deploy.
-          publish_dir: ./out
+          publish_dir: ./dist
