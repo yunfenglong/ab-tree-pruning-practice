@@ -1,0 +1,42 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Add this permissions block
+permissions:
+  contents: write
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          # cache: 'pnpm' # Optional: Adds caching for faster installs
+
+      - name: Install Dependencies
+        run: npm i
+
+      # Step 1: Build the website
+      # Ensure your package.json has a "build": "next build" script
+      - name: Build Website
+        run: npm run build
+
+      # Step 2: Deploy to GitHub Pages using the dedicated action
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          # This token is provided by GitHub Actions automatically
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # The folder the action should deploy.
+          publish_dir: ./out
